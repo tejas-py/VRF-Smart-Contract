@@ -1,8 +1,6 @@
 from algosdk.future import transaction
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
-import base64
-
 
 def algo_client():
     algod_address = "https://testnet-algorand.api.purestake.io/ps2"
