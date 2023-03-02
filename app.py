@@ -1,14 +1,13 @@
 from algosdk.future import transaction
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
-import json
+
 
 def algo_client():
     algod_address = "https://testnet-algorand.api.purestake.io/ps2"
-    algod_token = "K7DgVll3W19DdHA3FTduX4XZTuCvTFf32HXUP5E4"
+    algod_token = "ksZOvoviIZ163QVUoTht86g0qMBmLJIS9hcFpcNl"
     headers = {"X-API-Key": algod_token}
     conn = algod.AlgodClient(algod_token, algod_address, headers)
-
     return conn
 
 
@@ -54,7 +53,9 @@ byte "random"
 bnz main_l5
 err
 main_l5:
-int 28111260
+global Round
+int 10
+-
 store 0
 int 0
 store 2
@@ -78,12 +79,14 @@ load 1
 itxn_field ApplicationArgs
 itxn_submit
 itxn LastLog
-extract 33 0
+extract 0 9
 store 3
 byte "random number"
 load 3
 extract 2 0
 btoi
+int 9999999
+%
 app_global_put
 int 1
 return
@@ -135,7 +138,7 @@ def call_app(app_id, account_mnemonic):
     params = client.suggested_params()
     params.fee = 2000
 
-    app_args = ['random', int()]
+    app_args = ['random', int(algo_client().status()['last-round'] - int(10))]
     private_key = mnemonic.to_private_key(account_mnemonic)
     sender = account.address_from_private_key(private_key)
 
@@ -154,5 +157,6 @@ if __name__ == "__main__":
     account1 = "sunset year win conduct length lens census tissue town coyote member speak peanut client magnet orbit law there bid excuse frame hill air absorb country"
     account2 = "myth copper sock coach hurt hammer grace similar vacant physical congress milk own actress screen lesson never survey extend blouse drip table shock about honey"
 
-    # created_application = create_app(account1)
-    # tx_id = call_app(created_application, account2)
+    created_application = create_app(account1)
+    tx_id = call_app(created_application, account2)
+    # print(102002019309120192 % 9_999_999)

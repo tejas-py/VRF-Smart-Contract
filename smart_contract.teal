@@ -15,8 +15,9 @@ byte "random"
 bnz main_l5
 err
 main_l5:
-txna ApplicationArgs 1
-btoi
+global Round
+int 10
+-
 store 0
 int 0
 store 2
@@ -40,12 +41,14 @@ load 1
 itxn_field ApplicationArgs
 itxn_submit
 itxn LastLog
-extract 33 0
+extract 0 9
 store 3
 byte "random number"
 load 3
 extract 2 0
 btoi
+int 9999999
+%
 app_global_put
 int 1
 return
