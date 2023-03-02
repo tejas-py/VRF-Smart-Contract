@@ -10,7 +10,7 @@ def approval_program():
 
     get_randomness = Seq(
         # Prep arguments
-        (round_number := abi.Uint64()).set(Int(27950830)),
+        (round_number := abi.Uint64()).set(Btoi(Txn.application_args[1])),
         (user_data := abi.make(abi.DynamicArray[abi.Byte])).set([]),
         InnerTxnBuilder.ExecuteMethodCall(
             app_id=Txn.applications[1],
@@ -19,13 +19,13 @@ def approval_program():
         ),
         # Remove first 4 bytes (ABI return prefix)
         # and return the rest
-        Suffix(InnerTxn.last_log(), Int(4))
+        Suffix(InnerTxn.last_log(), Int(33))
     )
 
     vrf = Seq(
         # # Get the randomness back
         (randomness_number := abi.DynamicBytes()).decode(get_randomness),
-        App.globalPut(Bytes('random number'), GetBit(randomness_number.get(), Int(0))),
+        App.globalPut(Bytes('random number'), Btoi(randomness_number.get())),
         Approve()
     )
 

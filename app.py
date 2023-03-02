@@ -1,6 +1,7 @@
 from algosdk.future import transaction
 from algosdk import account, mnemonic
 from algosdk.v2client import algod
+import json
 
 def algo_client():
     algod_address = "https://testnet-algorand.api.purestake.io/ps2"
@@ -13,7 +14,7 @@ def algo_client():
 
 def compile_program(client, source_code):
     compile_response = client.compile(source_code.decode('utf-8'))
-    return base64.b64decode(compile_response['result'])
+    return transaction.base64.b64decode(compile_response['result'])
 
 
 def wait_for_confirmation(client, txid):
@@ -53,7 +54,7 @@ byte "random"
 bnz main_l5
 err
 main_l5:
-int 27952900
+int 28111260
 store 0
 int 0
 store 2
@@ -77,13 +78,12 @@ load 1
 itxn_field ApplicationArgs
 itxn_submit
 itxn LastLog
-extract 4 0
+extract 33 0
 store 3
 byte "random number"
 load 3
 extract 2 0
-int 0
-getbit
+btoi
 app_global_put
 int 1
 return
@@ -135,7 +135,7 @@ def call_app(app_id, account_mnemonic):
     params = client.suggested_params()
     params.fee = 2000
 
-    app_args = ['random']
+    app_args = ['random', int()]
     private_key = mnemonic.to_private_key(account_mnemonic)
     sender = account.address_from_private_key(private_key)
 
@@ -155,4 +155,4 @@ if __name__ == "__main__":
     account2 = "myth copper sock coach hurt hammer grace similar vacant physical congress milk own actress screen lesson never survey extend blouse drip table shock about honey"
 
     # created_application = create_app(account1)
-    tx_id = call_app(160599095, account2)
+    # tx_id = call_app(created_application, account2)
