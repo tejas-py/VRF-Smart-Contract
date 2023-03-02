@@ -1,0 +1,57 @@
+#pragma version 7
+txn ApplicationID
+int 0
+==
+bnz main_l6
+txn OnCompletion
+int NoOp
+==
+bnz main_l3
+err
+main_l3:
+txna ApplicationArgs 0
+byte "random"
+==
+bnz main_l5
+err
+main_l5:
+int 27950830
+store 0
+int 0
+store 2
+load 2
+itob
+extract 6 0
+byte ""
+concat
+store 1
+itxn_begin
+int appl
+itxn_field TypeEnum
+txna Applications 1
+itxn_field ApplicationID
+method "must_get(uint64,byte[])byte[]"
+itxn_field ApplicationArgs
+load 0
+itob
+itxn_field ApplicationArgs
+load 1
+itxn_field ApplicationArgs
+itxn_submit
+itxn LastLog
+extract 4 0
+store 3
+byte "random number"
+load 3
+extract 2 0
+int 0
+getbit
+app_global_put
+int 1
+return
+main_l6:
+byte "random number"
+int 1111
+app_global_put
+int 1
+return
