@@ -5,7 +5,7 @@ from algosdk.v2client import algod
 
 def algo_client():
     algod_address = "https://testnet-algorand.api.purestake.io/ps2"
-    algod_token = "ksZOvoviIZ163QVUoTht86g0qMBmLJIS9hcFpcNl"
+    algod_token = ""
     headers = {"X-API-Key": algod_token}
     conn = algod.AlgodClient(algod_token, algod_address, headers)
     return conn
@@ -154,9 +154,7 @@ def call_app(app_id, account_mnemonic):
 
 if __name__ == "__main__":
 
-    account1 = "sunset year win conduct length lens census tissue town coyote member speak peanut client magnet orbit law there bid excuse frame hill air absorb country"
-    account2 = "myth copper sock coach hurt hammer grace similar vacant physical congress milk own actress screen lesson never survey extend blouse drip table shock about honey"
+    account = "MNEMONIC FOR THE ACCOUNT TO DO THE TRANSACTION"
 
-    created_application = create_app(account1)
-    tx_id = call_app(created_application, account2)
-    # print(102002019309120192 % 9_999_999)
+    created_application = create_app(account)
+    tx_id = call_app(created_application, account)

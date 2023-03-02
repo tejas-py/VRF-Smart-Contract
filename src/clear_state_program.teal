@@ -1,4 +1,2 @@
-#pragma version 6
-// This program clears program state
-
+#pragma version 7
 int 1
